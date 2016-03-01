@@ -23,6 +23,19 @@
       padding: 5px;
     }
   </style>
+  <script id="vertexShader" type="x-shader/x-vertex">
+    void main() {
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+    }
+  </script>
+  <script id="fragmentShader" type="x-shader/x-vertex">
+    void main() {
+    gl_FragColor = vec4(1.0,  // R
+                        0.0,  // G
+                        1.0,  // B
+                        1.0); // A
+    }
+  </script>
 </head>
 <body>
 
@@ -59,9 +72,13 @@
         segments = 50,
         rings = 25;
 
-    var sphereMaterial = new THREE.MeshLambertMaterial({
-      color: 0xCC0000
+    var vShader = document.getElementById('vertexShader').innerHTML;
+    var fShader = document.getElementById('fragmentShader').innerHTML;
+    var sphereMaterial = new THREE.ShaderMaterial({
+      vertexShader:   vShader,
+      fragmentShader: fShader
     });
+
     var sphere = new THREE.Mesh(new THREE.SphereGeometry(radius, segments, rings), sphereMaterial);
 
     // add the sphere to the scene
