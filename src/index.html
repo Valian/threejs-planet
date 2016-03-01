@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>three.js webgl - materials</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <style>
+    body {
+      color: #fff;
+      font-family:Monospace;
+      font-size:13px;
+      text-align:center;
+
+      background-color: #000;
+      margin: 0px;
+      overflow: hidden;
+    }
+
+    #info {
+      position: absolute;
+      top: 0px; width: 100%;
+      padding: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="container"></div>
+<div id="info"><a href="http://threejs.org" target="_blank">three.js</a> - Lava planet by Jakub Skałecki.</div>
+
+<script src="libs/three.min.js"></script>
+<script src="libs/OrbitControls.js"></script>
+
+<script src="libs/Detector.js"></script>
+<script src="libs/stats.min.js"></script>
+
+<script>
+
+  if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+
+  var container, stats;
+
+  var camera, scene, renderer, controls, objects = [];
+
+  function init() {
+
+    container = document.createElement( 'div' );
+    document.body.appendChild( container );
+
+    camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 2000 );
+    camera.position.set( 0.0, 400, 400 * 3.5 );
+
+    scene = new THREE.Scene();
+
+    // Materials
+
+    var radius = 500,
+        segments = 50,
+        rings = 25;
+
+    var sphereMaterial = new THREE.MeshLambertMaterial({
+      color: 0xCC0000
+    });
+    var sphere = new THREE.Mesh(new THREE.SphereGeometry(radius, segments, rings), sphereMaterial);
+
+    // add the sphere to the scene
+    scene.add(sphere);
+
+    // Lights
+
+    scene.add( new THREE.AmbientLight( 0x222222 ) );
+
+    var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
+    directionalLight.position.set( 1, 1, 1 ).normalize();
+    scene.add( directionalLight );
+
+
+    //
+
+    renderer = new THREE.WebGLRenderer( { antialias: true } );
+    renderer.setClearColor( 0x0a0a0a );
+    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.sortObjects = true;
+
+    container.appendChild( renderer.domElement );
+
+    renderer.gammaInput = true;
+    renderer.gammaOutput = true;
+
+    //
+
+    stats = new Stats();
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.top = '0px';
+
+    container.appendChild( stats.domElement );
+
+    controls = new THREE.OrbitControls( camera );
+    controls.target.set( 0, 0, 0 );
+    controls.update();
+
+    window.addEventListener( 'resize', onWindowResize, false );
+
+  }
+
+  function onWindowResize() {
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize( window.innerWidth, window.innerHeight );
+
+  }
+
+  //
+
+  function animate() {
+
+    requestAnimationFrame( animate );
+
+    render();
+    stats.update();
+
+  }
+
+  function render() {
+
+    camera.lookAt( scene.position );
+
+    for ( var i = 0, l = objects.length; i < l; i ++ ) {
+
+      var object = objects[ i ];
+
+      object.rotation.y += 0.005;
+
+    }
+
+    renderer.render( scene, camera );
+
+  }
+
+
+  init();
+  animate();
+
+</script>
+
+</body>
+</html>

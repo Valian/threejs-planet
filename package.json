@@ -1,0 +1,30 @@
+{
+  "name": "threejs-planet",
+  "version": "0.1.0",
+  "description": "Lava planet generated in browser using three.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Valian/threejs-planet.git"
+  },
+  "keywords": [
+    "threejs",
+    "webgl",
+    "procedral",
+    "shaders"
+  ],
+  "author": "Jakub Skałecki",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Valian/threejs-planet/issues"
+  },
+  "homepage": "https://github.com/Valian/threejs-planet#readme",
+  "dependencies": {
+    "finalhandler": "^0.4.1",
+    "serve-static": "^1.10.2",
+    "three": "^0.74.0"
+  }
+}
